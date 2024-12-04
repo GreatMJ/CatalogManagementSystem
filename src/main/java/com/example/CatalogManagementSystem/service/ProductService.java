@@ -9,13 +9,18 @@ import com.example.CatalogManagementSystem.transformer.ProductTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
+
 public class ProductService {
 
     private final ProductRepository productRepository;
+    public ProductService(ProductRepository productRepository){
+        this.productRepository=productRepository;
+    }
 
     // method to add product
     public String add(ProductRequest productRequest){
@@ -30,4 +35,27 @@ public class ProductService {
         ProductResponse productResponse=ProductTransformer.entityToResponse(product);
         return productResponse;
     }
+
+    // method to products by brand
+   public List<ProductResponse> getProductsByBrand(String brand){
+
+       // trim the category
+       String trimmedBrand=brand.trim();
+       if(trimmedBrand.isEmpty()) throw new IllegalArgumentException("Category must not be empty.");
+
+
+       List<Product> productList=productRepository.findProductsByBrand(trimmedBrand);
+       // if no menu items found
+        if(productList==null || productList.isEmpty()) throw new ResourceNotFoundException(String.format("No products found for brand %s .",trimmedBrand));
+
+        // initialize product response list
+       List<ProductResponse>productResponseList=new ArrayList<>(productList.size());
+
+       for(Product product:productList){
+           ProductResponse productResponse=ProductTransformer.entityToResponse(product);
+           productResponseList.add(productResponse);
+       }
+
+       return productResponseList;
+   }
 }
