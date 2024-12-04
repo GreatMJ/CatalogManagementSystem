@@ -14,4 +14,9 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     @Query(value = "select * from products where products_brand = :brand",nativeQuery = true)
     List<Product> findProductsByBrand(@Param("brand") String brand);
+
+    // using jpql query
+    @Query("SELECT p FROM Product p WHERE p.brand = :brand AND p.category = :category")
+    List<Product> findByBrandAndCategory(@Param("brand") String brand, @Param("category") String category);
+
 }

@@ -108,6 +108,26 @@ The application exposes the following **RESTful API endpoints**:
    - **Request Parameter**: `id` (Product ID).
    - **Response**: Confirmation of product deletion.
 
+4. **Get All Products by Brand** (`GET /api/v1/products/brand`)
+- **Description**: Retrieves all products associated with a given brand, filtered by the `brand` query parameter.
+- **Request Parameter**:
+   - `brand` (Query Parameter): The ID of the brand to filter products by.
+- **Response**:
+   - **200 OK**: A list of products under the specified brand.
+   - **404 Not Found**: If no products are found for the given brand ID.
+
+### 5. **Get Products by Brand and Category**
+
+#### **Endpoint**:
+`GET /api/v1/products/brand/{brand}/category/{category}`
+
+#### **Description**:
+This endpoint retrieves a list of products under a specific **brand** and **category**. It filters the products based on the provided `brand` and `category` values.
+
+#### **Path Parameters**:
+- `brand` (required): The name of the brand for which products need to be fetched.
+- `category` (required): The name of the category for which products need to be fetched.
+
 ## Validation and Error Handling
 
 The application uses Java Validation API annotations like `@NotBlank`, `@NotNull`, and `@Positive` to ensure that the input is valid. If any of the validation constraints are violated, the application will respond with an appropriate HTTP status code and a message indicating what went wrong.

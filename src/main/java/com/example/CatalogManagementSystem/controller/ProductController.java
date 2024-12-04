@@ -4,6 +4,7 @@ import com.example.CatalogManagementSystem.dto.request.ProductRequest;
 import com.example.CatalogManagementSystem.dto.response.ProductResponse;
 import com.example.CatalogManagementSystem.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,23 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
-    @GetMapping
+    @GetMapping("/brand")
     public ResponseEntity<List<ProductResponse>> getProductsByBrand(@RequestParam  @NotBlank(message = "Brand must not be empty") String brand){
         List<ProductResponse> res=productService.getProductsByBrand(brand);
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/brand/{brand}/category/{category}")
+    public ResponseEntity<List<ProductResponse>> getProductsUnderGivenBrandAndCategory(@PathVariable @NotBlank(message = "Brand must not be empty") String brand,@PathVariable @NotBlank(message = "Category must not be empty") String category){
+        List<ProductResponse> res=productService.getProductsUnderGivenBrandAndCategory(brand,category);
+        return ResponseEntity.ok(res);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteProductById( @RequestParam  @Min(value = 1, message = "Product ID must be greater than 0")int id){
+
+        String res=productService.deleteProductById(id);
+        return ResponseEntity.ok(res);
+
     }
 }

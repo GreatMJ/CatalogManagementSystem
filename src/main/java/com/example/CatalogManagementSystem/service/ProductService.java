@@ -49,13 +49,42 @@ public class ProductService {
         if(productList==null || productList.isEmpty()) throw new ResourceNotFoundException(String.format("No products found for brand %s .",trimmedBrand));
 
         // initialize product response list
-       List<ProductResponse>productResponseList=new ArrayList<>(productList.size());
-
-       for(Product product:productList){
-           ProductResponse productResponse=ProductTransformer.entityToResponse(product);
-           productResponseList.add(productResponse);
-       }
-
+       List<ProductResponse>productResponseList=convertProductListToProductResponseList(productList);
        return productResponseList;
    }
+
+   // get the product of specific brand and category
+    public List<ProductResponse> getProductsUnderGivenBrandAndCategory(String brand,String category){
+        List<Product> productList=productRepository.findByBrandAndCategory(brand,category);
+
+        // if no menu items found
+        if(productList==null || productList.isEmpty()) throw new ResourceNotFoundException(String.format("No products found under brand %s and category %s .",brand,category));
+
+        // initialize product response list
+        List<ProductResponse>productResponseList=convertProductListToProductResponseList(productList);
+        return productResponseList;
+
+    }
+
+    // private method to convert productList to ProductResponseList
+    private List<ProductResponse> convertProductListToProductResponseList(List<Product> productList){
+        List<ProductResponse>productResponseList=new ArrayList<>(productList.size());
+
+        for(Product product:productList){
+            ProductResponse productResponse=ProductTransformer.entityToResponse(product);
+            productResponseList.add(productResponse);
+        }
+        return productResponseList;
+    }
+
+
+
+// delete product
+    public String deleteProductById(int id){
+        Product product=productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Product with id %s not found.",id)));
+
+        productRepository.delete(product);
+        return String.format("%s has removed from system database.",product.getName());
+
+    }
 }
