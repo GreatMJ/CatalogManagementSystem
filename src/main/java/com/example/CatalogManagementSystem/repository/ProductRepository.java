@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> {
 
-    @Query(value = "select * from products where products_brand = :brand",nativeQuery = true)
+    @Query(value = "select * from products where brand = :brand",nativeQuery = true)
     List<Product> findProductsByBrand(@Param("brand") String brand);
 
     // using jpql query

@@ -15,6 +15,7 @@ public class ProductTransformer {
                  .quantity(productRequest.getQuantity())
                  .price(productRequest.getPrice())
                  .category(productRequest.getCategory())
+                 .description(productRequest.getDescription())
                  .dateAdded(LocalDate.now())
                        .build();
 
@@ -28,6 +29,7 @@ public class ProductTransformer {
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
                 .dateAdded(product.getDateAdded())
+                .category(product.getCategory())
                 .build();
     }
 }

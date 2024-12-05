@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "proudcts")
+@Table(name = "products")
 @Builder
 public class Product {
     @Id
