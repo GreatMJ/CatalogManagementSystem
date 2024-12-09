@@ -7,13 +7,14 @@ import com.example.CatalogManagementSystem.models.Product;
 import com.example.CatalogManagementSystem.repository.ProductRepository;
 import com.example.CatalogManagementSystem.transformer.ProductTransformer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Service
+@Component
 
 public class ProductService {
 
@@ -86,5 +87,11 @@ public class ProductService {
         productRepository.delete(product);
         return String.format("%s has removed from system database.",product.getName());
 
+    }
+
+    public List<Product> getProductUnderGivenBrandAndCategoryAndHaveId(List<String> brandList,List<String > categoryList,List<Integer> idList){
+        List<Product> productList=productRepository.getProductUnderGivenBrandAndCategoryAndHaveId(brandList,categoryList,idList);
+
+        return productList;
     }
 }

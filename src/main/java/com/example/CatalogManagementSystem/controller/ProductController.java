@@ -1,14 +1,17 @@
 package com.example.CatalogManagementSystem.controller;
 
+import com.example.CatalogManagementSystem.dto.request.FilterRequest;
 import com.example.CatalogManagementSystem.dto.request.ProductRequest;
 import com.example.CatalogManagementSystem.dto.response.ProductResponse;
+import com.example.CatalogManagementSystem.models.Product;
 import com.example.CatalogManagementSystem.service.ProductService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,8 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
+    
+
     @GetMapping("/brand")
     public ResponseEntity<List<ProductResponse>> getProductsByBrand(@RequestParam  @NotBlank(message = "Brand must not be empty") String brand){
         List<ProductResponse> res=productService.getProductsByBrand(brand);
@@ -56,5 +61,13 @@ public class ProductController {
         String res=productService.deleteProductById(id);
         return ResponseEntity.ok(res);
 
+    }
+
+    @PostMapping("/conditions")
+    public  ResponseEntity<List<Product>> getProductsUnderFilter(@RequestBody FilterRequest filterRequest){
+        List<Product> productList=productService.getProductUnderGivenBrandAndCategoryAndHaveId(filterRequest.getBrandList(),filterRequest.getCategoryList(),filterRequest.getIdList());
+
+
+        return ResponseEntity.ok(productList);
     }
 }
